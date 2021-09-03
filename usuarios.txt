@@ -1,0 +1,2 @@
+ivo,aventura,50,10
+Juan,Desafio,20,12
