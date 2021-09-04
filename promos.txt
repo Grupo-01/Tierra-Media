@@ -1,0 +1,3 @@
+absoluta	Pack abuelos	Paisaje 	72	Minas Tirith	Erebor
+porcentual	Pack mañosos	Degustación	0.20	Lothlórien	La Comarca
+AxB	pack manijas	Aventura	M oria	Moria   	Mordor  	Bosque Negro

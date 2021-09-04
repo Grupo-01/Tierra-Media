@@ -1,14 +1,18 @@
 package parque;
 
+import java.util.ArrayList;
+
 public class Promo extends Producto {
+
+	private ArrayList<Producto> atracciones;
+
+	public Promo( String nombreDeProducto, String tipoDeProducto,
+				int costoTotal, double tiempoDeProducto, ArrayList<Producto>  atracciones) {
+		super(nombreDeProducto, tipoDeProducto, costoTotal, tiempoDeProducto);
+		this.atracciones = atracciones;
+	}
 	
 
-	private String nombreDePromo;
-	private String [] atracciones;
-
-	public Promo(String nombre, String tipo, int costo, double tiempo) {
-		super(nombre, tipo, costo, tiempo);
-	}
 
 
 }

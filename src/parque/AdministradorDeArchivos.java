@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class AdministradorDeArchivos {
@@ -18,12 +18,12 @@ public class AdministradorDeArchivos {
 			BufferedReader br = new BufferedReader(new FileReader(direccion));
 
 			String linea, nombre, gusto;
-			int  presupuesto;
+			int presupuesto;
 			double tiempoDisponible;
 			String[] datosDeLinea;
 
 			while ((linea = br.readLine()) != null) {
-				datosDeLinea = linea.split(",");
+				datosDeLinea = linea.split("		");
 				nombre = datosDeLinea[0];
 				gusto = datosDeLinea[1];
 				tiempoDisponible = Double.parseDouble(datosDeLinea[2]);
@@ -39,9 +39,9 @@ public class AdministradorDeArchivos {
 		return colaDeVisitantes;
 	}
 
-	public static LinkedList<Atraccion> leerArchivoDeAtracciones(String direccion) {
+	public static LinkedList<Producto> leerArchivoDeAtracciones(String direccion) {
 
-		LinkedList<Atraccion> listaDeAtracciones = new LinkedList<Atraccion>();
+		LinkedList<Producto> listaDeAtracciones = new LinkedList<Producto>();
 		Atraccion unaAtraccion = null;
 
 		try (BufferedReader br = new BufferedReader(new FileReader(direccion));) {
@@ -52,7 +52,7 @@ public class AdministradorDeArchivos {
 			String[] datosDeLinea;
 
 			while ((linea = br.readLine()) != null) {
-				datosDeLinea = linea.split("	");
+				datosDeLinea = linea.split("		");
 				nombre = datosDeLinea[0];
 				costo = Integer.parseInt(datosDeLinea[1]);
 				tiempo = Double.parseDouble(datosDeLinea[2]);
@@ -73,34 +73,20 @@ public class AdministradorDeArchivos {
 
 	}
 
-	public static HashMap<String,LinkedList<Atraccion>> leerArchivoDePromos(String direccion) {
+	public static LinkedList<Producto> leerArchivoDePromos(String direccion) {
 
-		HashMap<String,LinkedList<Atraccion>>listaDePromos = new HashMap<String,LinkedList<Atraccion>>();
-		Promo unaPromo = null;
+		LinkedList<Producto> listaDePromos = new LinkedList<Producto>();
 
 		try (BufferedReader br = new BufferedReader(new FileReader(direccion));) {
 
-			String linea, nombre, tipoDePromo,tipoDeAventura;
-			int tiempo, costo;
+			String linea;
 			String[] datosDeLinea;
-// esto no anda jaja
+
 			while ((linea = br.readLine()) != null) {
+
 				datosDeLinea = linea.split("	");
-				tipoDePromo = datosDeLinea[0];
-				tipoDeAventura = datosDeLinea[1];
 
-				
-				if(tipoDePromo == "absoluta")
-				unaPromo = new PromoAbsoluta(nombre, tipo, costo, tiempo);
-				
-				if(tipoDePromo == "procentual")
-				unaPromo = new PromoPorcentual(nombre, tipo, costo, tiempo);
-				
-				if(tipoDePromo == "AXB")
-				unaPromo = new PromoAxB(nombre, tipo, costo, tiempo);
-
-
-				
+				listaDePromos.add(AdministradorDeArchivos.pepe(datosDeLinea));
 			}
 			br.close();
 		} catch (IOException e) {
@@ -111,5 +97,38 @@ public class AdministradorDeArchivos {
 		}
 		return listaDePromos;
 
+	}
+
+	private static Producto pepe (String[] datosDeLinea) {
+		Producto unaPromo = null;
+		String nombreDePromo = datosDeLinea[1];
+		String tipoDeProducto = datosDeLinea[2];
+		double tiempoTotal = 0;
+		int costoTotal = 0;
+		ArrayList<Producto> atraccionesDePromo = new ArrayList<Producto>();
+
+		for (int i = 4; i < datosDeLinea.length; i++) {
+
+			for (Producto elemento : TierraMedia.getAtracciones()) {
+				if (elemento.getNombreDeProducto().equals(datosDeLinea[i]) ) {
+					atraccionesDePromo.add(elemento);
+					tiempoTotal += elemento.getTimepoDeProducto();
+					costoTotal += elemento.getCostoTotal();
+				}
+			}
+		}
+		if (datosDeLinea[0].equals("porcentual") ) {
+			double descuento = Double.parseDouble(datosDeLinea[3]);
+			unaPromo = new PromoPorcentual(nombreDePromo, tipoDeProducto, descuento, costoTotal, tiempoTotal, atraccionesDePromo);
+		}
+		if (datosDeLinea[0].equals("AxB")) {
+			String productoGratis = datosDeLinea[3];
+			unaPromo = new PromoAxB(nombreDePromo, tipoDeProducto, productoGratis, costoTotal, tiempoTotal, atraccionesDePromo);
+		}
+		if (datosDeLinea[0].equals("absoluta")) {
+			int cosotoDelPack = Integer.parseInt(datosDeLinea[3]);
+			unaPromo = new PromoAbsoluta(nombreDePromo, tipoDeProducto, cosotoDelPack, tiempoTotal, atraccionesDePromo);
+		}
+	return unaPromo;
 	}
 }

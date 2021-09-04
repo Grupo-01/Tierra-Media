@@ -3,24 +3,41 @@ package parque;
 
 public class Producto {
 	
-	private String nombre;
-	private String tipo;
-	private double costo;
-	private double tiempo;
+	private String nombreDeProducto;
+	private String tipoDeProducto;
+	private double costoTotal;
+	private double timepoDeProducto;
 
-	public Producto(String nombre, String tipo, int costo, double tiempo) {
-		this.nombre = nombre;
-		this.tipo = tipo;
-		this.costo = costo;
-		this.tiempo = tiempo;
+	public Producto(String nombreDeProducto, String tipoDeProducto, int costoTotal, double tiempoDeProducto) {
+		this.nombreDeProducto = nombreDeProducto;
+		this.tipoDeProducto = tipoDeProducto;
+		this.costoTotal = costoTotal;
+		this.timepoDeProducto = tiempoDeProducto;
 	}
+
+	
+	public double getCostoTotal() {
+		return costoTotal;
+	}
+
+
+	public double getTimepoDeProducto() {
+		return timepoDeProducto;
+	}
+
+
+	public String getNombreDeProducto() {
+		return nombreDeProducto;
+	}
+
 
 	@Override
 	public String toString() {
-		return "Producto [nombre=" + nombre + ", tipo=" + tipo +
-				", costo=" + costo + ", tiempo=" + tiempo + "]";
+		return "Producto [nombreDeProducto=" + nombreDeProducto + ", tipoDeProducto=" + tipoDeProducto + ", costoTotal="
+				+ costoTotal + ", timepoDeProducto=" + timepoDeProducto + "]";
 	}
-	
+
+
 	
 	
 	
